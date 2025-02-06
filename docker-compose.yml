@@ -9,3 +9,4 @@ services:
       - .:/app
     environment:
       - PYTHONPATH=/app
+      - CSV_BATCH_SIZE=1000
