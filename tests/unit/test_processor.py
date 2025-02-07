@@ -42,7 +42,6 @@ class TestCSVProcessor:
     async def test_process_valid_csv(self, valid_csv_content):
         processor = CSVProcessor()
         file = create_mock_file(valid_csv_content)
-        print(file)
         
         result = await processor.process(file)
         

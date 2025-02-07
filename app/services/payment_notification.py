@@ -16,7 +16,7 @@ class PaymentNotificationService:
             try:
                 pdf_ref = self.pdf_generator.generate_pdf(charge)
                 self.email_notifier.notify(pdf_ref, charge.email)
-                print(
+                logger.info(
                     "Processed payment notification for '%s' with PDF '%s'", 
                     charge.email, pdf_ref
                 )

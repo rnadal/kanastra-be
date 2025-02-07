@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 from fastapi import UploadFile
 from io import StringIO
@@ -8,6 +9,14 @@ from decimal import Decimal
 from datetime import datetime
 from uuid import UUID
 import os
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler()]
+)
+
+logger = logging.getLogger(__name__)
 
 
 class FileProcessor(ABC):
@@ -53,8 +62,8 @@ class CSVProcessor(FileProcessor):
         row_count = 0
         for row_num, row in enumerate(csv_reader, start=1):
             row_count += 1
-            print(f"Processing row {row_count}")
-            print(f"Row data: {row}")
+            logger.info(f"Processing row {row_count}")
+            logger.info(f"Row data: {row}")
             try:
                 processed_row = {
                     "name": row["name"],
@@ -67,10 +76,10 @@ class CSVProcessor(FileProcessor):
                 
                 charge = ChargeNotification(**processed_row)
                 yield charge
-                print(f"Successfully processed row {row_count}")
+                logger.info(f"Successfully processed row {row_count}")
                 
             except Exception as e:
-                print(f"Failed to process row {row_count}: {str(e)}")
+                logger.error(f"Failed to process row {row_count}: {str(e)}")
                 yield e
 
 
