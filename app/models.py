@@ -17,6 +17,7 @@ class ChargeStatus(enum.Enum):
 class CSVFile(Base):
     __tablename__ = "csv_files"
     id = Column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    fingerprint = Column(String, unique=True, nullable=False)
     filename = Column(String, nullable=False)
     upload_date = Column(DateTime, default=datetime.utcnow)
     charge_rows = relationship("ChargeRow", back_populates="csv_file", cascade="all, delete-orphan")
@@ -30,7 +31,7 @@ class ChargeRow(Base):
     email = Column(String, nullable=False)
     debt_amount = Column(Numeric, nullable=False)
     debt_due_date = Column(Date, nullable=False)
-    debt_id = Column(String, nullable=False)  # storing it as string for simplicity
+    debt_id = Column(String, unique=True, nullable=False)
     status = Column(Enum(ChargeStatus), default=ChargeStatus.PENDING)
     error = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
