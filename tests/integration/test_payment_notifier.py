@@ -1,6 +1,6 @@
 import logging
 from app.schemas.charge_notification import ChargeNotification
-from app.services.PDFGenerator import PDFGenerator
+from app.services.payment_file import PDFGenerator
 from app.services.payment_notifier import EmailNotifier
 
 def test_pdf_generation_and_email_notification(caplog):

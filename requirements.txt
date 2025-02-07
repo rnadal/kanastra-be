@@ -28,3 +28,7 @@ typing_extensions==4.12.2
 tzdata==2025.1
 uvicorn==0.34.0
 wheel==0.45.1
+celery[redis]==5.4.0
+psycopg==3.2.4
+sqlalchemy==2.0.38
+alembic==1.10.2

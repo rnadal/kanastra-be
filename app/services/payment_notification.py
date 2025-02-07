@@ -1,7 +1,7 @@
 import logging
 from typing import List
 from app.schemas.charge_notification import ChargeNotification
-from app.services.PDFGenerator import PDFGenerator
+from app.services.payment_file import PDFGenerator
 from app.services.payment_notifier import EmailNotifier
 
 logger = logging.getLogger(__name__)
