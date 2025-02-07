@@ -12,7 +12,7 @@ def create_test_csv(content: str, filename: str = "test.csv"):
 
 def test_process_valid_csv():
     content = (
-        "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+        "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
         "John Doe,11111111111,john@example.com,1000.00,2023-01-01,550e8400-e29b-41d4-a716-446655440000"
     )
     
@@ -31,7 +31,7 @@ def test_process_invalid_file_type():
 
 def test_process_invalid_csv_content():
     content = (
-        "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+        "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
         "Invalid,invalid,,invalid,invalid,invalid"
     )
     
@@ -44,7 +44,7 @@ def test_process_invalid_csv_content():
     assert len(result["result"]["errors"]) == 1
 
 def test_process_empty_csv():
-    content = "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+    content = "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
     
     response = client.post("/process-file/", files=create_test_csv(content))
     

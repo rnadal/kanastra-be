@@ -20,18 +20,20 @@ class CSVProcessor(FileProcessor):
     def __init__(self):
         self.BATCH_SIZE = int(os.getenv("CSV_BATCH_SIZE", 1000))
 
-    async def process(self, file: UploadFile) -> Dict[str, Any]:
+    async def process(self, file: UploadFile) -> dict:
         stats = {
             "total_rows": 0,
             "processed_rows": 0,
             "failed_rows": 0,
-            "errors": []
+            "errors": [],
+            "charges": []
         }
         
         async for result in self._process_stream(file):
             stats["total_rows"] += 1
             if isinstance(result, ChargeNotification):
                 stats["processed_rows"] += 1
+                stats["charges"].append(result)
             else:
                 stats["failed_rows"] += 1
                 stats["errors"].append({
@@ -56,11 +58,11 @@ class CSVProcessor(FileProcessor):
             try:
                 processed_row = {
                     "name": row["name"],
-                    "government_id": row["government_id"],
+                    "government_id": row["governmentId"],
                     "email": row["email"],
-                    "debt_amount": Decimal(row["debt_amount"]),
-                    "debt_due_date": datetime.strptime(row["debt_due_date"], "%Y-%m-%d").date(),
-                    "debt_id": UUID(row["debt_id"].strip())
+                    "debt_amount": Decimal(row["debtAmount"]),
+                    "debt_due_date": datetime.strptime(row["debtDueDate"], "%Y-%m-%d").date(),
+                    "debt_id": UUID(row["debtId"].strip())
                 }
                 
                 charge = ChargeNotification(**processed_row)

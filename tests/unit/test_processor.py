@@ -17,14 +17,14 @@ def create_mock_file(content: str) -> UploadFile:
 @pytest.fixture
 def valid_csv_content():
     return (
-        "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+        "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
         "John Doe,11111111111,john@example.com,1000.00,2023-01-01,550e8400-e29b-41d4-a716-446655440000"
     )
 
 @pytest.fixture
 def invalid_csv_content():
     return (
-        "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+        "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
         "John Doe,invalid_id,invalid_email,invalid_amount,invalid_date,invalid_uuid"
     )
 
@@ -67,7 +67,7 @@ class TestCSVProcessor:
     @pytest.mark.asyncio
     async def test_process_empty_csv(self):
         processor = CSVProcessor()
-        file = create_mock_file("name,government_id,email,debt_amount,debt_due_date,debt_id\n")
+        file = create_mock_file("name,governmentId,email,debtAmount,debtDueDate,debtId\n")
         
         result = await processor.process(file)
         
@@ -79,7 +79,7 @@ class TestCSVProcessor:
     @pytest.mark.asyncio
     async def test_process_multiple_rows(self):
         content = (
-            "name,government_id,email,debt_amount,debt_due_date,debt_id\n"
+            "name,governmentId,email,debtAmount,debtDueDate,debtId\n"
             "John Doe,11111111111,john@example.com,1000.00,2023-01-01,550e8400-e29b-41d4-a716-446655440000\n"
             "Jane Doe,22222222222,jane@example.com,2000.00,2023-01-02,650e8400-e29b-41d4-a716-446655440000\n"
             "Invalid,invalid,,invalid,invalid,invalid"
@@ -110,7 +110,7 @@ class TestCSVProcessor:
     async def test_batch_processing(self):
         row = "John Doe,11111111111,john@example.com,1000.00,2023-01-01,550e8400-e29b-41d4-a716-446655440000\n"
         rows = [row] * (CSVProcessor().BATCH_SIZE + 1)
-        content = "name,government_id,email,debt_amount,debt_due_date,debt_id\n" + "".join(rows)
+        content = "name,governmentId,email,debtAmount,debtDueDate,debtId\n" + "".join(rows)
         
         processor = CSVProcessor()
         file = create_mock_file(content)

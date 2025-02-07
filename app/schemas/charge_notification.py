@@ -7,7 +7,7 @@ import re
 
 class ChargeNotification(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
-    government_id: str = Field(..., min_length=11, max_length=14)
+    government_id: str
     email: EmailStr
     debt_amount: Decimal = Field(..., gt=0)
     debt_due_date: date
