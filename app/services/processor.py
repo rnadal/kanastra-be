@@ -52,7 +52,7 @@ class CSVProcessor(FileProcessor):
         for row_num, row in enumerate(csv_reader, start=1):
             row_count += 1
             print(f"Processing row {row_count}")
-            print(f"Row data: {row}")  # Debug line to see the actual row data
+            print(f"Row data: {row}")
             try:
                 processed_row = {
                     "name": row["name"],
@@ -60,7 +60,7 @@ class CSVProcessor(FileProcessor):
                     "email": row["email"],
                     "debt_amount": Decimal(row["debt_amount"]),
                     "debt_due_date": datetime.strptime(row["debt_due_date"], "%Y-%m-%d").date(),
-                    "debt_id": UUID(row["debt_id"].strip())  # .strip() removes any extraneous whitespace
+                    "debt_id": UUID(row["debt_id"].strip())
                 }
                 
                 charge = ChargeNotification(**processed_row)
@@ -69,7 +69,6 @@ class CSVProcessor(FileProcessor):
                 
             except Exception as e:
                 print(f"Failed to process row {row_count}: {str(e)}")
-                print(f"Debt ID value: '{row['debt_id']}'")  # Debug line to see the UUID value
                 yield e
 
 
