@@ -45,4 +45,4 @@ def process_charge(self, charge_id):
         logger.error(f"Failed to process charge {charge_id}: {exc}")
         raise self.retry(exc=exc, countdown=60)
     finally:
-        session.close() 
+        session.close()

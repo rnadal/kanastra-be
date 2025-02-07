@@ -40,7 +40,6 @@ class CSVProcessor(FileProcessor):
         }
         session = SessionLocal()
         try:
-            # Create a new CSVFile record:
             csv_file = CSVFile(filename=file.filename)
             session.add(csv_file)
             session.commit()
@@ -49,7 +48,6 @@ class CSVProcessor(FileProcessor):
                 stats["total_rows"] += 1
                 if isinstance(result, ChargeNotification):
                     stats["processed_rows"] += 1
-                    # Create and persist a ChargeRow linked to the csv_file.
                     charge_row = ChargeRow(
                         csv_file_id=csv_file.id,
                         name=result.name,
@@ -62,6 +60,8 @@ class CSVProcessor(FileProcessor):
                     )
                     session.add(charge_row)
                     session.commit()
+                    session.refresh(charge_row)
+                    stats.setdefault("charges", []).append(charge_row)
                 else:
                     stats["failed_rows"] += 1
                     stats["errors"].append({

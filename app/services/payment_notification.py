@@ -1,24 +1,13 @@
+from app.tasks import process_charge
 import logging
-from typing import List
-from app.schemas.charge_notification import ChargeNotification
-from app.services.payment_file import PDFGenerator
-from app.services.payment_notifier import EmailNotifier
 
 logger = logging.getLogger(__name__)
 
 class PaymentNotificationService:
-    def __init__(self):
-        self.pdf_generator = PDFGenerator()
-        self.email_notifier = EmailNotifier()
-
-    def process_payments(self, charges: List[ChargeNotification]) -> None:
+    def process_payments(self, charges) -> None:
         for charge in charges:
             try:
-                pdf_ref = self.pdf_generator.generate_pdf(charge)
-                self.email_notifier.notify(pdf_ref, charge.email)
-                logger.info(
-                    "Processed payment notification for '%s' with PDF '%s'", 
-                    charge.email, pdf_ref
-                )
+                process_charge.delay(str(charge.id))
+                logger.info("Enqueued payment notification task for charge id: %s", charge.id)
             except Exception as e:
-                logger.error("Error processing payment notification for %s: %s", charge.email, e) 
+                logger.error("Failed to enqueue task for charge %s: %s", charge.id, e)
